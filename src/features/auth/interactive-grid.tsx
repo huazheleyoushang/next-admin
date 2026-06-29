@@ -47,6 +47,7 @@ export function InteractiveGridPattern({
       {Array.from({ length: horizontal * vertical }).map((_, index) => {
         const x = (index % horizontal) * width;
         const y = Math.floor(index / horizontal) * height;
+        const isHovered = hoveredSquare === index;
         return (
           <rect
             key={index}
@@ -55,12 +56,18 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             className={cn(
-              'stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000',
-              hoveredSquare === index ? 'fill-gray-300/30' : 'fill-transparent',
+              'stroke-gray-400/30 transition-all duration-100 ease-out',
+              isHovered ? 'fill-gray-300/30' : 'fill-transparent',
               squaresClassName
             )}
-            onMouseEnter={() => setHoveredSquare(index)}
-            onMouseLeave={() => setHoveredSquare(null)}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+              setHoveredSquare(index);
+            }}
+            onMouseLeave={(e) => {
+              e.stopPropagation();
+              setHoveredSquare(null);
+            }}
           />
         );
       })}

@@ -1,24 +1,23 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+'use client';
 
-export function SignForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function SignForm({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div className={cn("space-y-4 px-6 pb-6", className)} {...props}>
+    <div className={cn("space-y-5 rounded-xl border border-border bg-white px-6 pb-8 pt-6 shadow-sm", className)} {...props}>
       {/* OAuth buttons — horizontal grid */}
       <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" className="h-9">
           <svg className="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
           </svg>
           GitHub
         </Button>
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" className="h-9">
           <svg className="h-4 w-4 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
             <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" />
             <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z" />
@@ -33,18 +32,19 @@ export function SignForm({
       <div className="relative">
         <Separator className="absolute inset-0 top-1/2" />
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">or</span>
+          <span className="bg-white px-2 text-muted-foreground">or</span>
         </div>
       </div>
 
       {/* Email field */}
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-sm font-medium">Email address</Label>
         <Input
           id="email"
           type="email"
-          placeholder="m@example.com"
+          placeholder="your_mail+clerk_test@example.com"
           required
+          className="h-9"
         />
       </div>
 
@@ -56,10 +56,20 @@ export function SignForm({
       {/* Sign up link */}
       <p className="text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4 hover:text-primary">
+        <a href="#" className="underline underline-offset-4 hover:text-foreground">
           Sign up
         </a>
       </p>
+
+      {/* Secured by Clerk */}
+      <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground/70">
+        <span>Secured by</span>
+        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span className="font-medium text-muted-foreground">clerk</span>
+      </div>
     </div>
-  )
+  );
 }

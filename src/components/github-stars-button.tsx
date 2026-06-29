@@ -11,7 +11,7 @@ interface GitHubRepo {
 
 async function fetchGitHubRepo(owner: string, repo: string): Promise<GitHubRepo | null> {
   try {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+    const response = await fetch(`https://api.github.com/${owner}/${repo}`, {
       headers: { Accept: 'application/vnd.github.v3+json' },
       next: { revalidate: 3600 }
     });
