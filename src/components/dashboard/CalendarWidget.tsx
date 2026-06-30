@@ -3,18 +3,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 
 // 有活动的日期标记（mock）
 const activeDays = [3, 7, 12, 15, 20, 25, 28];
 
 export function CalendarWidget() {
-  const [currentMonth] = useState(new Date(2026, 5)); // 2026年6月
+  const year = 2026;
+  const month = 6;
+  const monthName = '6';
 
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // 2026年6月第一天是周二(2)，共30天
+  const firstDay = 2;
+  const daysInMonth = 30;
 
   // 中文星期
   const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
@@ -25,7 +25,7 @@ export function CalendarWidget() {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base">日历</CardTitle>
       </CardHeader>
@@ -37,7 +37,7 @@ export function CalendarWidget() {
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <span className="text-sm font-medium">
-              {year}年{month + 1}月
+              {year}年{monthName}月
             </span>
             <Button variant="ghost" size="icon" className="h-7 w-7">
               <ChevronRight className="h-4 w-4" />
@@ -58,7 +58,6 @@ export function CalendarWidget() {
                 key={i}
                 className={
                   'relative flex h-8 w-8 items-center justify-center text-sm mx-auto' +
-                  (day === null ? '' : '') +
                   (day !== null && activeDays.includes(day)
                     ? ' font-semibold text-primary'
                     : ' text-muted-foreground')

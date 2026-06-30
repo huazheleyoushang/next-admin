@@ -29,7 +29,14 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
   const router = useRouter();
 
   function isActive(url: string): boolean {
-    return pathname === url || pathname.startsWith(url + '/');
+    if (pathname === url) return true;
+    // 精确匹配后，检查是否有更长的导航项也匹配此路径
+    // 如果有，说明当前页面对应的是更长的导航项，而非此项
+    const longerMatch = navItems.some(
+      (item) => item.url.length > url.length && item.url.startsWith(url + '/') && pathname.startsWith(item.url)
+    );
+    if (longerMatch) return false;
+    return pathname.startsWith(url + '/');
   }
 
   function handleLogout() {
@@ -58,12 +65,10 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
                 key={item.url}
                 href={item.url}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-200 ease-out',
-                  'hover:bg-accent/60 hover:text-foreground hover:translate-x-0.5',
-                  'active:scale-[0.98]',
+                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
                   active
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground'
+                    ? 'bg-primary text-primary-foreground hover:bg-primary'
+                    : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground'
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -77,7 +82,7 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
         <div className="border-t p-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex w-full items-center gap-3 rounded-lg p-2 transition-all duration-200 ease-out hover:bg-accent/60 hover:translate-x-0.5 active:scale-[0.98]">
+              <button className="flex w-full items-center gap-3 rounded-lg p-2 transition-colors hover:bg-accent/60">
                 <Avatar className="h-8 w-8">
                   {auth.user?.avatar && <AvatarImage src={auth.user.avatar} />}
                   <AvatarFallback>{initials}</AvatarFallback>

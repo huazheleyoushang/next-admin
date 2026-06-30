@@ -8,7 +8,7 @@ const Badge = React.forwardRef<
   const variants = {
     default: "bg-primary text-primary-foreground border-transparent",
     secondary: "bg-secondary text-secondary-foreground border-transparent",
-    destructive: "bg-destructive text-destructive-foreground border-transparent",
+    destructive: "bg-destructive text-primary-foreground border-transparent",
     outline: "text-foreground border-input",
   };
   return (
