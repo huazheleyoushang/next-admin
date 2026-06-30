@@ -58,10 +58,12 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
                 key={item.url}
                 href={item.url}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
+                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-200 ease-out',
+                  'hover:bg-accent/60 hover:text-foreground hover:translate-x-0.5',
+                  'active:scale-[0.98]',
                   active
                     ? 'bg-primary text-primary-foreground'
-                    : 'hover:bg-accent text-muted-foreground hover:text-foreground'
+                    : 'text-muted-foreground'
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -75,9 +77,9 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: SidebarProps) {
         <div className="border-t p-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex w-full items-center gap-3 rounded-lg p-2 hover:bg-accent">
+              <button className="flex w-full items-center gap-3 rounded-lg p-2 transition-all duration-200 ease-out hover:bg-accent/60 hover:translate-x-0.5 active:scale-[0.98]">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="" />
+                  {auth.user?.avatar && <AvatarImage src={auth.user.avatar} />}
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 {!collapsed && (

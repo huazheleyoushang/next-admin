@@ -1,45 +1,8 @@
+'use client';
+
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
-
-// ─── GitHub API helpers (self-contained) ─────────────────────────────────────
-
-interface GitHubRepo {
-  fullName: string;
-  stars: number;
-}
-
-async function fetchGitHubRepo(owner: string, repo: string): Promise<GitHubRepo | null> {
-  try {
-    const response = await fetch(`https://api.github.com/${owner}/${repo}`, {
-      headers: { Accept: 'application/vnd.github.v3+json' },
-      next: { revalidate: 3600 }
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    if (typeof data.full_name !== 'string' || typeof data.stargazers_count !== 'number') {
-      return null;
-    }
-    return {
-      fullName: data.full_name,
-      stars: data.stargazers_count
-    };
-  } catch {
-    return null;
-  }
-}
-
-function formatCount(count: number): string {
-  if (count >= 1_000_000) {
-    const value = count / 1_000_000;
-    return `${value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)}m`;
-  }
-  if (count >= 1_000) {
-    const value = count / 1_000;
-    return `${value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)}k`;
-  }
-  return count.toLocaleString('en-US');
-}
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -121,28 +84,16 @@ async function GitHubStarsButton({
   className,
   ...props
 }: GitHubStarsButtonProps) {
-  const data = starsProp == null ? await fetchGitHubRepo(owner, repo) : null;
-  const stars = starsProp ?? data?.stars ?? null;
-  const fullName = data?.fullName ?? `${owner}/${repo}`;
-
   return (
     <a
       href={`https://github.com/${owner}/${repo}`}
       target='_blank'
       rel='noopener noreferrer'
       data-slot='github-stars-button'
-      aria-label={`${fullName} on GitHub${stars !== null ? ` — ${stars.toLocaleString('en-US')} stars` : ''}`}
       className={cn(githubStarsButtonVariants({ variant, size, className }))}
       {...props}
     >
       <GitHubIcon iconStyle={iconStyle} className='shrink-0' />
-      {showRepo && <span>{fullName}</span>}
-      {stars !== null && (
-        <>
-          {showRepo && <span className='bg-border h-3.5 w-px shrink-0' aria-hidden='true' />}
-          <span className='tabular-nums'>{formatCount(stars)}</span>
-        </>
-      )}
     </a>
   );
 }

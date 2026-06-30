@@ -41,7 +41,7 @@ export function InteractiveGridPattern({
     <svg
       width={width * horizontal}
       height={height * vertical}
-      className={cn('absolute inset-0 h-full w-full border border-gray-400/30', className)}
+      className={cn('absolute inset-0 h-full w-full', className)}
       {...props}
     >
       {Array.from({ length: horizontal * vertical }).map((_, index) => {
@@ -56,9 +56,9 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             className={cn(
-              'stroke-gray-400/30 transition-all duration-100 ease-out',
-              isHovered ? 'fill-gray-300/30' : 'fill-transparent',
-              squaresClassName
+              'stroke-gray-400/20 transition-all duration-150 ease-out',
+              'cursor-default',
+              isHovered ? 'fill-gray-400/40 stroke-gray-400/50' : 'fill-transparent'
             )}
             onMouseEnter={(e) => {
               e.stopPropagation();

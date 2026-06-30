@@ -5,8 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function SignForm({ className, ...props }: React.ComponentProps<"div">) {
+  const { setAuth } = useAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    // Mock login: 用邮箱名作为用户名
+    const name = email.split("@")[0];
+    console.log('sign in with email: ', name);
+    setAuth({ user: { email, name }, token: "mock-token" });
+    router.push("/dashboard");
+  }
+
   return (
     <div className={cn("space-y-5 rounded-xl border border-border bg-white px-6 pb-8 pt-6 shadow-sm", className)} {...props}>
       {/* OAuth buttons — horizontal grid */}
@@ -45,11 +61,13 @@ export function SignForm({ className, ...props }: React.ComponentProps<"div">) {
           placeholder="your_mail+clerk_test@example.com"
           required
           className="h-9"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
 
       {/* Continue button */}
-      <Button type="submit" className="w-full">
+      <Button type="button" className="w-full :hover:cursor-pointer" onClick={handleSubmit}>
         Continue
       </Button>
 
